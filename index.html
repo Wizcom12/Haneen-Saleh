@@ -3,1404 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ms. Haneen's English Hub</title>
-    <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- GSAP (Animation) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-
-<!-- Font Awesome (Icons) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   
-
-
+    <title>Hey Haneen! Let's Master Those Vowels! 🎓</title>
     <style>
-        /* Overlay styles */
-        .search-overlay {
-            background-color: rgba(0, 0, 0, 0.8);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --border-radius: 8px;
+            --accent-pink: #ff69b4;
+            --note-bg: #fff3cd;
         }
-    
-        .search-overlay.active {
-            opacity: 1;
-            visibility: visible;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    
-        /* Mobile menu animations */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100vh;
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .personal-note {
+            background-color: #ffe6f2;
+            border: 2px solid var(--accent-pink);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .personal-note::before {
+            content: '💌';
+            font-size: 1.5rem;
+            position: absolute;
+            top: -15px;
+            left: -15px;
             background: white;
-            z-index: 50;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            overflow-y: auto;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+            border-radius: 50%;
         }
-    
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-    
-        /* Mobile menu overlay */
-        .mobile-menu::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        .vowel-table {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
-            z-index: -1;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
-    
-        .mobile-menu.active::before {
-            opacity: 1;
-            visibility: visible;
+
+        .vowel-table th, .vowel-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid #ddd;
         }
-    
-        /* Search results animations */
-        .search-result {
-            transition: all 0.3s ease;
-        }
-    
-        .search-result:hover {
-            transform: translateX(10px);
-        }
-    
-        /* Dropdown animations */
-        .dropdown-content {
-            opacity: 0;
-            transform: translateY(-10px);
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-    
-        .dropdown:hover .dropdown-content {
-            opacity: 1;
-            transform: translateY(0);
-            visibility: visible;
-        }
-    
-        /* Custom scrollbar for search results */
-        .search-results::-webkit-scrollbar {
-            width: 6px;
-        }
-    
-        .search-results::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-    
-        .search-results::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-    
-        /* Video overlay */
-        .video-overlay {
-            transition: opacity 0.3s ease;
-        }
-    
-        /* Session content transitions */
-        .session-content {
-            transition: opacity 0.3s ease;
-        }
-    
-        /* Package card animations */
-        .package-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-    
-        .package-card:hover {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-    
-        /* Notification styles */
-        .notification {
-            z-index: 9999;
-        }
-    
-        /* Add smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-    
-        /* Active tab styling */
-        .tab-btn.active {
-            background-color: #2563eb;
+
+        .vowel-table th {
+            background-color: var(--primary-color);
             color: white;
         }
+
+        .vowel-table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+        .activity-box {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .note {
+            background-color: var(--note-bg);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .example {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 0.5rem 0;
+        }
+
+        .challenge {
+            background-color: #e8f4f8;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            border: 2px dashed var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .vowel-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
     </style>
-
-
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="bg-blue-900 text-white py-2">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4 text-sm">
-                    <a href="mailto:contact@haneenHub.com" class="hover:text-blue-200 transition">
-                        <i class="fas fa-envelope mr-2"></i>
-                        contact@haneenHub.com
-                    </a>
-                    <span class="hidden md:inline-flex items-center">
-                        <i class="fas fa-phone-alt mr-2"></i>
-                        +249 12 424 2790
-                    </span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="hover:text-blue-200 transition">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="hover:text-blue-200 transition">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="hover:text-blue-200 transition">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Navigation -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <img src="haneen.png" alt="Hub Logo" class="h-12 w-12 rounded">
-                    <div class="ml-3">
-                        <h1 class="text-xl font-bold text-gray-900">Ms. Haneen's Hub</h1>
-                        <p class="text-sm text-gray-600">Secondary English Excellence</p>
-                    </div>
-                </div>
-
-                <!-- Desktop Navigation -->
-                <nav class="hidden lg:flex items-center space-x-8">
-                    <!-- Programs Dropdown -->
-                    <div class="dropdown relative group">
-                        <button class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition">
-                            <span>Programs</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="dropdown-content absolute top-full left-0 w-64 bg-white shadow-lg rounded-lg mt-2 p-4">
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-graduation-cap mr-2 text-blue-600"></i>
-                                Grade 1 
-                            </a>
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-book-reader mr-2 text-blue-600"></i>
-                                Grade 2 
-                            </a>
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-pen-fancy mr-2 text-blue-600"></i>
-                                Grade 3 
-                            </a>
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-award mr-2 text-blue-600"></i>
-                                Grade 4 
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Live Classes Dropdown -->
-                    <div class="dropdown relative group">
-                        <button class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition">
-                            <span>Live Classes</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="dropdown-content absolute top-full left-0 w-64 bg-white shadow-lg rounded-lg mt-2 p-4">
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-video mr-2 text-red-600"></i>
-                                Current Live Sessions
-                            </a>
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                                Upcoming Classes
-                            </a>
-                            <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">
-                                <i class="fas fa-history mr-2 text-green-600"></i>
-                                Past Recordings
-                            </a>
-                        </div>
-                    </div>
-
-                    <a href="#resources" class="text-gray-700 hover:text-blue-600 transition">Resources</a>
-                    <a href="#packages" class="text-gray-700 hover:text-blue-600 transition">Packages</a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-600 transition">Contact</a>
-                </nav>
-
-                <!-- Right Side Actions -->
-                <div class="flex items-center space-x-4">
-                    <!-- Search Trigger -->
-                    <button id="searchTrigger" class="text-gray-600 hover:text-blue-600 transition">
-                        <i class="fas fa-search text-xl"></i>
-                    </button>
-
-                    <!-- Notifications -->
-                    <button class="text-gray-600 hover:text-blue-600 transition relative">
-                        <i class="fas fa-bell text-xl"></i>
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                            3
-                        </span>
-                    </button>
-
-                    <!-- Login/Register -->
-                    <div class="hidden md:flex items-center space-x-4">
-                        <button class="text-gray-700 hover:text-blue-600 transition">Login</button>
-                        <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">
-                            Register
-                        </button>
-                    </div>
-
-                    <!-- Mobile Menu Trigger -->
-                    <button id="mobileMenuTrigger" class="lg:hidden text-gray-600 hover:text-blue-600 transition">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+    <header>
+        <h1>🎉 Hey Haneen! Ready for Some Vowel Magic?</h1>
+        <p>Your Bestie's Guide to Conquering and teaching
+             Vowel Teams! at least   lets goooooooooo!!!!!!!!💪💪🌟</p>
     </header>
 
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 lg:hidden">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold">Menu</h2>
-                <button id="closeMenu" class="text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <nav class="space-y-4">
-                <div class="space-y-2">
-                    <h3 class="text-sm font-semibold text-gray-500">Programs</h3>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Grade 1 </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Grade 2 </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Grade 3 </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Grade 4 </a>
-                </div>
-                <div class="space-y-2">
-                    <h3 class="text-sm font-semibold text-gray-500">Live Classes</h3>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Current Sessions</a>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Upcoming Classes</a>
-                    <a href="#" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Past Recordings</a>
-                </div>
-                <a href="#resources" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Resources</a>
-                <a href="#packages" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Packages</a>
-                <a href="#contact" class="block py-2 px-4 hover:bg-blue-50 rounded transition">Contact</a>
-            </nav>
+    <div class="container">
+        <div class="personal-note">
+            <p>Hey buddy! Remember how we always joke about those tricky conversations in our chats? Well, I've put together this super fun guide just for you! And yes, I promise it's going to be as entertaining as our coffee break chats! 😉</p>
+            <p>Let's tackle these vowels together - and maybe have a few laughs along the way (just like we always do)! 🎯</p>
         </div>
-    </div>
 
-    <!-- Search Overlay -->
-    <div id="searchOverlay" class="search-overlay fixed inset-0 z-50 flex items-start justify-center pt-20">
-        <div class="bg-white w-full max-w-3xl mx-4 rounded-lg shadow-2xl">
-            <div class="p-4 border-b">
-                <div class="flex items-center">
-                    <i class="fas fa-search text-gray-400 text-xl mr-4"></i>
-                    <input type="text" 
-                           id="searchInput"
-                           class="w-full text-lg focus:outline-none" 
-                           placeholder="Search for courses, topics, or resources...">
-                    <button id="closeSearch" class="text-gray-600 hover:text-gray-900">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- Search Results -->
-            <div class="search-results max-h-96 overflow-y-auto p-4">
-                <!-- Results will be dynamically populated -->
-            </div>
-        </div>
-    </div>
+        <section class="intro">
+            <h2>Guess What, Haneen? We're About to Make Your Vowel Teaching Super Fun! 🚀</h2>
+            <p>Remember how we always say teaching should be fun? Well, get ready because we're about to turn these vowel lessons into an adventure that your students will love! (Almost as fun as our whatsapp conversations, but maybe with fewer coffee spills 😂)</p>
+        </section>
 
-    <!-- Live Status Bar -->
-    <div class="bg-gradient-to-r from-red-50 to-red-100 border-b border-red-200 py-3">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="flex items-center">
-                        <span class="h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
-                        <span class="ml-2 text-red-600 font-semibold">LIVE NOW:</span>
-                    </div>
-                    <span class="text-gray-800">Grade 3 - Advanced Literary Analysis with Ms. Haneen</span>
-                </div>
-                <button class="bg-red-600 text-white px-4 py-1 rounded-full hover:bg-red-700 transition flex items-center">
-                    <i class="fas fa-video mr-2"></i>
-                    Join Live
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-r from-blue-900 to-blue-800 py-20">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="text-white">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-6">
-                        Master Academic English Excellence
-                    </h1>
-                    <p class="text-xl mb-8 text-blue-100">
-                        Professional English education for secondary grades 1-4. Focus on academic writing, critical analysis, and examination success.
-                    </p>
-                    <div class="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row">
-                        <button class="bg-white text-blue-900 px-8 py-3 rounded hover:bg-blue-50 transition font-semibold">
-                            Start Learning
-                        </button>
-                        <button class="border-2 border-white text-white px-8 py-3 rounded hover:bg-white hover:text-blue-900 transition">
-                            View Courses
-                        </button>
-                    </div>
-                    <div class="mt-8 flex items-center space-x-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-graduation-cap text-yellow-400 mr-2"></i>
-                            <span>95% Success Rate</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-users text-yellow-400 mr-2"></i>
-                            <span>500+ Students</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <img src="academic.png" alt="Academic Excellence" class="rounded-lg shadow-2xl">
-                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-xl">
-                        <div class="text-center">
-                            <div class="font-bold text-3xl text-blue-600">A*</div>
-                            <div class="text-sm text-gray-600">Average Grade</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Current & Upcoming Sessions -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold">Live Sessions</h2>
-                <div class="flex space-x-2">
-                    <button class="tab-btn active px-4 py-2 rounded-lg bg-blue-600 text-white">
-                        Current
-                    </button>
-                    <button class="tab-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">
-                        Upcoming
-                    </button>
-                    <button class="tab-btn px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100">
-                        Past
-                    </button>
-                </div>
+        <section>
+            <h2>1. Wait, What? Vowels Can Team Up?!</h2>
+            <div class="activity-box">
+                <h3>📖 Meet the Talking Vowels: A Storytime Moment</h3>
+                <p>Once upon a time, vowels realized that being alone was kinda boring… so they teamed up! Some pairs decided that one vowel should do all the talking(king vowel) (ai, oa, ee), while others blended their voices together (oi, ou, ow). And guess what? Some vowel teams even like to switch sounds depending on the word! Sneaky, right? (Just like when your students try to sneak extra break time! 😉)</p>
             </div>
 
-            <!-- Live Sessions Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Current Session -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-red-500">
-                    <div class="relative">
-                        <img src="literacy.jpg" alt="Live Session" class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm flex items-center">
-                            <span class="animate-pulse mr-2">●</span> Live Now
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Advanced Literary Analysis</h3>
-                        <div class="space-y-3 mb-4">
-                            <div class="flex items-center text-gray-600">
-                                <i class="far fa-clock mr-2"></i>
-                                <span>Duration: 90 minutes</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-user-graduate mr-2"></i>
-                                <span>Grade 3 </span>
-                            </div>
-                        </div>
-                        <button class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition">
-                            Join Now
-                        </button>
-                    </div>
-                </div>
+            <h3>Vowel Teams That Stick Together Like Besties (Like Us! 👯‍♀️)</h3>
+            <table class="vowel-table">
+                <thead>
+                    <tr>
+                        <th>Vowel Team</th>
+                        <th>Example Words</th>
+                        <th>Expanded Sentence</th>
+                        <th>Sound Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ai</td>
+                        <td>rain, train, mail, stain</td>
+                        <td>"We ran through the rain to catch the train, but then someone slipped on a stain!"</td>
+                        <td>Long A – Sounds like the a in "day"</td>
+                    </tr>
+                    <tr>
+                        <td>ea</td>
+                        <td>team, dream, leaf, scream</td>
+                        <td>"Let's work as a team so we can finally live our dream of teaching vowels like pros!"</td>
+                        <td>Long E – Sounds like the ee in "see"</td>
+                    </tr>
+                    <tr>
+                        <td>oa</td>
+                        <td>boat, coat, road, goat</td>
+                        <td>"He wore a warm coat as he sailed a boat down the road. (Wait… what?! That makes no sense! 😂)"</td>
+                        <td>Long O – Sounds like the o in "go"</td>
+                    </tr>
+                    <tr>
+                        <td>ou</td>
+                        <td>house, mouse, cloud, loud</td>
+                        <td>"A mouse ran into my house and scared me so much I screamed LOUD!"</td>
+                        <td>Ow Sound – Starts with an "ah" and glides into "oo" like "ow!"</td>
+                    </tr>
+                    <tr>
+                        <td>ow</td>
+                        <td>cow, now, brown, wow</td>
+                        <td>"Wow, did you see that cow jump just now? That's udderly amazing!"</td>
+                        <td>Ow Sound – Same as ou in "loud"</td>
+                    </tr>
+                    <tr>
+                        <td>ay</td>
+                        <td>day, play, tray, delay</td>
+                        <td>"Let's play outside all day, unless someone forgets the snack tray again."</td>
+                        <td>Long A – Same as ai in "rain"</td>
+                    </tr>
+                    <tr>
+                        <td>ui</td>
+                        <td>fruit, juice, suit, cruise</td>
+                        <td>"I spilled my juice on my suit during our cruise! Smooth, right?"</td>
+                        <td>Long U – Sounds like "oo" in "fruit"</td>
+                    </tr>
+                    <tr>
+                        <td>oo</td>
+                        <td>moon, food, school, cool</td>
+                        <td>"We ate food under the moon after school. Super cool!"</td>
+                        <td>Long OO – Sounds like "oo" in "spoon"</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <!-- Upcoming Sessions -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-blue-500">
-                    <div class="relative">
-                        <img src="essay.jpg" alt="Upcoming Session" class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
-                            Starting in 2 hours
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Essay Writing Workshop</h3>
-                        <div class="space-y-3 mb-4">
-                            <div class="flex items-center text-gray-600">
-                                <i class="far fa-calendar mr-2"></i>
-                                <span>Today, 3:00 PM</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-user-graduate mr-2"></i>
-                                <span>Grade 2 </span>
-                            </div>
-                        </div>
-                        <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
-                            Book Now
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Another Upcoming Session -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-blue-500">
-                    <div class="relative">
-                        <img src="research.jpg" alt="Upcoming Session" class="w-full h-48 object-cover">
-                        <div class="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
-                            Tomorrow
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Research Methods</h3>
-                        <div class="space-y-3 mb-4">
-                            <div class="flex items-center text-gray-600">
-                                <i class="far fa-calendar mr-2"></i>
-                                <span>Tomorrow, 2:00 PM</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-user-graduate mr-2"></i>
-                                <span>Grade 4 </span>
-                            </div>
-                        </div>
-                        <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
-                            Book Now
-                        </button>
-                    </div>
-                </div>
+            <div class="note">
+                <p>🧐 Wait, hold up! Did you notice something? In vowels  (ea), sometimes the vowels behave differently like in the words (team vs. head). Tricky, right? Don't worry, we've got a trick for that later! (Remember our secret hand signals for different sounds? 😉)</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Sample Classes Preview -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Experience Our Classes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="relative rounded-lg overflow-hidden shadow-lg">
-                    <video class="w-full h-64 object-cover" autoplay muted loop>
-                        <source src="/api/placeholder/video" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">Advanced Essay Writing</h3>
-                            <p class="text-gray-200">Learn structured academic writing techniques</p>
-                        </div>
-                    </div>
+        <section>
+            <h2>2. Let's Play the "What Sound Do You Hear?" Game!</h2>
+            <div class="activity-box">
+                <h3>🗣️ Say this out loud (With your amazing teacher voice!):</h3>
+                <div class="example">
+                    <p>"I have a blue coat." (Which vowel team?)</p>
+                    <p>"She saw a bright rainbow." (Where's the vowel team?)</p>
+                    <p>"The goat stood on a boat." (Double trouble!)</p>
                 </div>
-
-                <div class="relative rounded-lg overflow-hidden shadow-lg">
-                    <video class="w-full h-64 object-cover" autoplay muted loop>
-                        <source src="/api/placeholder/video" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                            <h3 class="text-white font-bold text-xl mb-2">Literature Analysis</h3>
-                            <p class="text-gray-200">Master critical reading and interpretation</p>
-                        </div>
-                    </div>
-                </div>
+                <p>(If you shout out random words hoping to guess right, don't worry… we've all done it. Remember our first-time linkup adventures? 😂)</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Packages Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Learning Packages</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Basic Package -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-4">Basic Package</h3>
-                        <div class="text-4xl font-bold mb-4">
-                            $199<span class="text-gray-500 text-lg">/month</span>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                8 Live Classes Monthly
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Basic Study Materials
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Email Support
-                            </li>
-                        </ul>
-                        <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
-                            Get Started
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Premium Package -->
-                <div class="bg-white rounded-lg shadow-xl overflow-hidden transform scale-105 border-2 border-blue-600">
-                    <div class="bg-blue-600 text-white text-center py-2">
-                        <span class="text-sm font-semibold">MOST POPULAR</span>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-4">Premium Package</h3>
-                        <div class="text-4xl font-bold mb-4">
-                            $299<span class="text-gray-500 text-lg">/month</span>
-                        </div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Unlimited Live Classes
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Premium Study Materials
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                24/7 Priority Support
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                1-on-1 Mentoring
-                            </li>
-                        </ul>
-                        <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
-                            Get Started
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Enterprise Package -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
-                        <div class="text-4xl font-bold mb-4">Custom</div>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Custom Class Schedule
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Dedicated Support Team
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check text-green-500 mr-2"></i>
-                                Customized Curriculum
-                            </li>
-                        </ul>
-                        <button class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-lg hover:bg-blue-50 transition">
-                            Contact Sales
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Success Stories -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Student Success Stories</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Success Story 1 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="/api/placeholder/400/200" alt="Student Success" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center mb-4">
-                            <img src="/api/placeholder/50/50" alt="Student" class="w-12 h-12 rounded-full">
-                            <div class="ml-4">
-                                <h3 class="font-bold">Sarah Ahmad</h3>
-                                <p class="text-gray-600">Grade 4 Student</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            "Ms. Haneen's advanced writing course helped me achieve an A* in my IGCSE English examination. The structured approach to essay writing was invaluable."
-                        </p>
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add more success stories with similar structure -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Resources Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Academic Resources</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Resource Card 1 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-book text-blue-600 text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2">Study Guides</h3>
-                    <p class="text-gray-600 mb-4">Comprehensive guides for all major topics and examinations.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 flex items-center">
-                        Access Library
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- Resource Card 2 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-video text-green-600 text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2">Video Library</h3>
-                    <p class="text-gray-600 mb-4">Recorded sessions and topic-specific video explanations.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 flex items-center">
-                        Watch Videos
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- Resource Card 3 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-pencil-alt text-purple-600 text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2">Practice Tests</h3>
-                    <p class="text-gray-600 mb-4">Sample papers and practice examinations with solutions.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 flex items-center">
-                        Start Practice
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-
-                <!-- Resource Card 4 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-graduation-cap text-red-600 text-xl"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2">Exam Prep</h3>
-                    <p class="text-gray-600 mb-4">Focused materials for examination preparation and success.</p>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 flex items-center">
-                        Get Started
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="py-16 bg-blue-600">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-6">Ready to Excel in English?</h2>
-            <p class="text-xl text-blue-100 mb-8">Join our academic community and transform your English proficiency</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-50 transition">
-                    Start Free Trial
-                </button>
-                <button class="border-2 border-white text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
-                    Schedule Consultation
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div>
-                    <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
-                    <p class="text-gray-600 mb-8">
-                        Have questions about our programs? Contact us for more information or to schedule a consultation.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-blue-600 w-8"></i>
-                            <span>contact@haneenHub.com</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-blue-600 w-8"></i>
-                            <span>+249 12 424 2790</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-blue-600 w-8"></i>
-                            <span>Entebbe , Uganda</span>
-                        </div>
-                    </div>
-                </div>
-
-                <form class="bg-white p-8 rounded-lg shadow-lg">
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-gray-700 mb-2">Name</label>
-                            <input type="text" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">Email</label>
-                            <input type="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">Message</label>
-                            <textarea class="w-full p-3 border rounded-lg h-32 focus:ring-2 focus:ring-blue-400"></textarea>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
-                            Send Message
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-<!-- Footer -->
-<footer class="bg-gray-900 text-white pt-16 pb-8">
-    <div class="max-w-7xl mx-auto px-4">
-        <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            <!-- Company Info -->
-            <div class="space-y-6">
-                <div class="flex items-center">
-                    <img style="width: 75px;" src="haneen.png" alt="Hub Logo" class="rounded">
-                    <div class="ml-3">
-                        <h3 class="font-bold text-lg">Ms. Haneen's Hub</h3>
-                        <p class="text-sm text-gray-400">Excellence in English Education</p>
-                    </div>
-                </div>
-                <p class="text-gray-400">
-                    Leading provider of secondary English education, committed to academic excellence and student success.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-facebook-f text-lg"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-twitter text-lg"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-linkedin-in text-lg"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-instagram text-lg"></i>
-                    </a>
-                </div>
+        <section>
+            <h2>3. Oops! Some Vowel Teams Love to Trick Us!</h2>
+            <div class="activity-box">
+                <h3>The Great Diphthong Drama! (As dramatic as our staff meetings! 🎭)</h3>
+                <p>Some vowel pairs don't like to follow the rules. Instead of letting one vowel do the talking, they smoosh their sounds together to create something totally new!</p>
             </div>
 
-            <!-- Quick Links -->
-            <div>
-                <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
-                <ul class="space-y-4">
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                            About Us
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                            Our Programs
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                            Live Classes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                            Success Stories
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                            Contact Us
-                        </a>
-                    </li>
+            <table class="vowel-table">
+                <thead>
+                    <tr>
+                        <th>Vowel Team</th>
+                        <th>Example Words</th>
+                        <th>Action!</th>
+                        <th>Sound Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ou</td>
+                        <td>house, mouse, shout, cloud</td>
+                        <td>Pretend to step on a LEGO and yell "Ouch!"</td>
+                        <td>Ow Sound – Starts with "ah" and slides into "oo" like "ouch!"</td>
+                    </tr>
+                    <tr>
+                        <td>oi</td>
+                        <td>coin, join, noise, voice</td>
+                        <td>Wiggle your fingers like you're making a "noisy" sound.</td>
+                        <td>Oy Sound – Sounds like "boy"</td>
+                    </tr>
+                    <tr>
+                        <td>ow</td>
+                        <td>cow, now, how, brown</td>
+                        <td>Point at something and say "Wow!" like you're super impressed.</td>
+                        <td>Ow Sound – Same as ou in "loud"</td>
+                    </tr>
+                    <tr>
+                        <td>aw</td>
+                        <td>saw, paw, yawn, claw</td>
+                        <td>Pretend to yawn. (Bonus if it's real.)</td>
+                        <td>Aw Sound – Sounds like "aww, that's cute!"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <h3>🧐 Wait, what about 'oo'?</h3>
+                <p>Great question! It can sound different in different words. Try these:</p>
+                <ul>
+                    <p>- The moon looks cool! (oo as in "food")</p>
+                    <p>- This book is good! (oo as in "foot")</p>
                 </ul>
             </div>
+        </section>
 
-            <!-- Programs -->
-            <div>
-                <h4 class="text-lg font-semibold mb-6">Our Programs</h4>
-                <ul class="space-y-4">
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-graduation-cap mr-2"></i>
-                            Grade 1 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-graduation-cap mr-2"></i>
-                            Grade 2 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-graduation-cap mr-2"></i>
-                            Grade 3 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-graduation-cap mr-2"></i>
-                            Grade 4 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
-                            <i class="fas fa-star mr-2"></i>
-                            Exam Preparation
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4 class="text-lg font-semibold mb-6">Stay Updated</h4>
-                <p class="text-gray-400 mb-4">
-                    Subscribe to our newsletter for the latest updates and resources.
-                </p>
-                <form class="space-y-4">
-                    <div class="relative">
-                        <input 
-                            type="email" 
-                            placeholder="Your email address" 
-                            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-400">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </form>
-                <div class="mt-6">
-                    <h5 class="font-semibold mb-3">Contact Info</h5>
-                    <div class="space-y-2">
-                        <p class="text-gray-400 flex items-center">
-                            <i class="fas fa-phone mr-2"></i>
-                            +249 12 424 2790
-                        </p>
-                        <p class="text-gray-400 flex items-center">
-                            <i class="fas fa-envelope mr-2"></i>
-                            contact@haneenHub.com
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Secondary Footer -->
-        <div class="border-t border-gray-800 pt-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <!-- Downloads -->
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition flex items-center">
-                        <i class="fab fa-apple text-2xl mr-2"></i>
-                        <div>
-                            <div class="text-xs">Download on the</div>
-                            <div class="font-semibold">App Store</div>
-                        </div>
-                    </a>
-                    <a href="#" class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition flex items-center">
-                        <i class="fab fa-google-play text-2xl mr-2"></i>
-                        <div>
-                            <div class="text-xs">Get it on</div>
-                            <div class="font-semibold">Google Play</div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Additional Links -->
-                <div class="flex items-center justify-center space-x-4 text-sm text-gray-400">
-                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                    <span>•</span>
-                    <a href="#" class="hover:text-white transition">Terms of Service</a>
-                    <span>•</span>
-                    <a href="#" class="hover:text-white transition">FAQ</a>
-                </div>
-
-                <!-- Payment Methods -->
-                <div class="flex items-center justify-end space-x-3">
-                    <span class="text-sm text-gray-400">Secure Payment:</span>
-                    <i class="fab fa-cc-visa text-2xl text-gray-400"></i>
-                    <i class="fab fa-cc-mastercard text-2xl text-gray-400"></i>
-                    <i class="fab fa-cc-paypal text-2xl text-gray-400"></i>
+        <section>
+            <h2>4. Let's Get Moving! (Yes, Just Like Our Energetic vulgar bullshit  whatsapp chats! 💃)</h2>
+            <div class="activity-box">
+                <h3>🎤 1. The Vowel Team Echo Game</h3>
+                <div class="example">
+                    <p>Just like when we repeat things in chats  together:</p>
+                    <p>YOU HAVE TO SHOUT THESE AS THEY REPEAT🤣 DO IT FOR ALL POSSIBLE  VOWEL SOUNDS BUDDY!! </p>
+                    <p>👩‍🏫 You: "Booooooat!"</p>
+                    <p>👨‍👧‍👦 Class: "Booooooat!"</p>
+                    <p>👩‍🏫 You: "Raaaaaiin!"</p>
+                    <p>👨‍👧‍👦 Class: "Raaaaaiin!"</p>
+                    <p>(Remember when we tried this with 'moon' and couldn't stop laughing? 😂 i know me and you have never tried it out!)</p>
                 </div>
             </div>
 
-            <!-- Copyright -->
-            <div class="text-center text-gray-400 text-sm">
-                <p>&copy; 2024 Ms. Haneen's English Hub. All rights reserved.</p>
+            <div class="activity-box">
+                <h3>📝 2. Fill in the Blanks</h3>
+                <div class="example">
+                    <p>The b_ _ t is floating on the water. (oa)</p>
+                    <p>I love eating fr_ _ t every morning. (ui)</p>
+                    <p>We heard a loud sh_ _ t in the crowd. (ou)</p>
+                </div>
             </div>
-        </div>
+
+            <div class="activity-box">
+                <h3>🎭 3. Act It Out (Your Favorite Part, Remember? 🎬)</h3>
+                <div class="example">
+                    <p>One person picks a vowel team word and acts it out without saying it. they just make actions of the vowel sounds,  Everyone else has to guess!</p>
+                    <p>(If you get to use  'cow' and start mooing, extra points! Just like that time after smoking 🚬🌿 in the dark)</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Time to Wrap It Up (But Not Like How We Wrap Our Lunch Sandwiches! 🌯)</h2>
+            <div class="challenge">
+                <h3>🎉 Your Special Challenge, Haneen!</h3>
+                <p>Write a silly story using at least three vowel teams - make it as crazy as our classroom stories! Maybe include that time when we tried to explain 'boat' and ended up with a whole maritime adventure? 😂</p>
+            </div>
+
+            <div class="activity-box">
+                <h3>Quick Review! (The Fun Version 🎯)</h3>
+                <div class="example">
+                    <p>💡 What's one vowel team you remember? (Besides the ones we giggle about during our chats)</p>
+                    <p>💡 What's a fun fact about vowels that surprised you? (As surprising as our smoking sessions)</p>
+                </div>
+            </div>
+
+            <div class="note">
+                <p>Let me say this—vowels love to team up to help us read and write. And sometimes, they just like to confuse us for fun (kind of like our students on test day! 😉).</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="personal-note">
+                <h3>You've Got This, Teaching Star! ⭐</h3>
+                <p>Haneen, you're going to rock these vowel lessons just like you rock everything else! Can't wait to hear all about how it goes during our next coffee break! ☕</p>
+                <p>Remember: when in doubt, just think of our silly memory tricks - they never fail! And if they do, well... that's what best friends are for! 😉</p>
+                <p>Your bestie and fellow teaching adventurer! 👋 ✨</p>
+                <p>P.S. Don't forget to document those funny student reactions - they'll make perfect stories for our next chats! 📸</p>
+            </div>
+        </footer>
     </div>
-</footer>
-
-
-<script>
-
-// Initialize GSAP and its plugins
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-// Main application class
-class EnglishAcademyApp {
-    constructor() {
-        // Initialize search data
-        this.searchData = [
-            { title: 'Grade 1 English Literature', type: 'Program', icon: 'fas fa-book', tags: ['grade 1', 'literature'] },
-            { title: 'Grade 2 Advanced Writing', type: 'Program', icon: 'fas fa-pen', tags: ['grade 2', 'writing'] },
-            { title: 'Grade 3 Critical Analysis', type: 'Program', icon: 'fas fa-brain', tags: ['grade 3', 'analysis'] },
-            { title: 'Grade 4 Research Methods', type: 'Program', icon: 'fas fa-search', tags: ['grade 4', 'research'] },
-            { title: 'Live Classes', type: 'Current', icon: 'fas fa-video', tags: ['live', 'current'] },
-            { title: 'Study Resources', type: 'Resource', icon: 'fas fa-book-open', tags: ['study', 'resources'] },
-            { title: 'Writing Workshop', type: 'Course', icon: 'fas fa-pen-fancy', tags: ['writing', 'workshop'] }
-        ];
-        
-        this.initializeElements();
-        this.initializeEventListeners();
-        this.initializeAnimations();
-        this.initializeMobileMenu();
-        this.initializeSearchFunctionality();
-        this.initializeTabSystem();
-        this.initializeFormValidation();
-    }
-
-    initializeElements() {
-        // Get all necessary DOM elements
-        this.elements = {
-            search: {
-                trigger: document.getElementById('searchTrigger'),
-                overlay: document.getElementById('searchOverlay'),
-                closeBtn: document.getElementById('closeSearch'),
-                input: document.getElementById('searchInput'),
-                results: document.querySelector('.search-results')
-            },
-            mobileMenu: {
-                trigger: document.getElementById('mobileMenuTrigger'),
-                menu: document.getElementById('mobileMenu'),
-                closeBtn: document.getElementById('closeMenu'),
-                menuItems: document.querySelectorAll('#mobileMenu a'),
-                menuLinks: document.querySelectorAll('#mobileMenu nav a')
-            },
-            tabs: {
-                buttons: document.querySelectorAll('.tab-btn'),
-                contents: document.querySelectorAll('.session-content')
-            },
-            forms: document.querySelectorAll('form')
-        };
-    }
-
-    initializeEventListeners() {
-        // Add event listeners for search and mobile menu
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.elements.search.overlay.classList.remove('active');
-                this.closeMobileMenu();
-            }
-        });
-    }
-
-    initializeMobileMenu() {
-        if (!this.elements.mobileMenu.trigger || !this.elements.mobileMenu.menu) return;
-
-        // Mobile menu event listeners
-        this.elements.mobileMenu.trigger.addEventListener('click', () => {
-            this.elements.mobileMenu.menu.style.transform = 'translateX(0)';
-            document.body.style.overflow = 'hidden';
-        });
-
-        this.elements.mobileMenu.closeBtn.addEventListener('click', () => {
-            this.closeMobileMenu();
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!this.elements.mobileMenu.menu.contains(e.target) && 
-                e.target !== this.elements.mobileMenu.trigger &&
-                this.elements.mobileMenu.menu.style.transform === 'translateX(0)') {
-                this.closeMobileMenu();
-            }
-        });
-    }
-
-    closeMobileMenu() {
-        if (this.elements.mobileMenu.menu) {
-            this.elements.mobileMenu.menu.style.transform = 'translateX(-100%)';
-            document.body.style.overflow = '';
-        }
-    }
-
-    initializeSearchFunctionality() {
-        if (!this.elements.search.trigger) return;
-
-        // Search overlay event listeners
-        this.elements.search.trigger.addEventListener('click', () => {
-            this.elements.search.overlay.classList.add('active');
-            this.elements.search.input.focus();
-            this.displayInitialSearchState();
-        });
-
-        this.elements.search.closeBtn.addEventListener('click', () => {
-            this.elements.search.overlay.classList.remove('active');
-        });
-
-        // Search input handling with debounce
-        let searchTimeout;
-        this.elements.search.input.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            const searchTerm = e.target.value.trim();
-
-            if (searchTerm.length < 2) {
-                this.displayInitialSearchState();
-                return;
-            }
-
-            this.showSearchLoading();
-
-            searchTimeout = setTimeout(() => {
-                const results = this.performSearch(searchTerm);
-                this.displaySearchResults(results);
-            }, 300);
-        });
-    }
-
-    performSearch(searchTerm) {
-        return this.searchData.filter(item => 
-            item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (item.tags && item.tags.some(tag => 
-                tag.toLowerCase().includes(searchTerm.toLowerCase())
-            ))
-        );
-    }
-
-    displaySearchResults(results) {
-        if (!results.length) {
-            this.elements.search.results.innerHTML = `
-                <div class="p-4 text-center text-gray-500">
-                    <i class="fas fa-search mb-2 text-2xl"></i>
-                    <p>No results found. Try different keywords.</p>
-                </div>
-            `;
-            return;
-        }
-
-        this.elements.search.results.innerHTML = results.map(result => `
-            <div class="search-result p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
-                <div class="flex items-center">
-                    <i class="${result.icon} text-blue-600 mr-3"></i>
-                    <div>
-                        <h4 class="font-semibold">${result.title}</h4>
-                        <p class="text-sm text-gray-600">${result.type}</p>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    showSearchLoading() {
-        this.elements.search.results.innerHTML = `
-            <div class="p-4 text-center text-gray-500">
-                <i class="fas fa-circle-notch fa-spin text-2xl"></i>
-                <p>Searching...</p>
-            </div>
-        `;
-    }
-
-    displayInitialSearchState() {
-        this.elements.search.results.innerHTML = `
-            <div class="p-4 text-center text-gray-500">
-                <i class="fas fa-search mb-2 text-2xl"></i>
-                <p>Enter at least 2 characters to search</p>
-                <div class="mt-4 grid grid-cols-2 gap-2">
-                    <button class="p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
-                        Grade 1
-                    </button>
-                    <button class="p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
-                        Live Classes
-                    </button>
-                    <button class="p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
-                        Resources
-                    </button>
-                    <button class="p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
-                        Writing
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    initializeTabSystem() {
-        if (!this.elements.tabs.buttons.length) return;
-
-        this.elements.tabs.buttons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                // Remove active state from all buttons
-                this.elements.tabs.buttons.forEach(btn => {
-                    btn.classList.remove('active', 'bg-blue-600', 'text-white');
-                    btn.classList.add('text-gray-600');
-                });
-
-                // Add active state to clicked button
-                button.classList.add('active', 'bg-blue-600', 'text-white');
-                button.classList.remove('text-gray-600');
-
-                // Hide all content sections
-                this.elements.tabs.contents.forEach(content => {
-                    gsap.to(content, {
-                        opacity: 0,
-                        duration: 0.3,
-                        display: 'none'
-                    });
-                });
-
-                // Show selected content
-                if (this.elements.tabs.contents[index]) {
-                    gsap.to(this.elements.tabs.contents[index], {
-                        opacity: 1,
-                        duration: 0.3,
-                        display: 'block'
-                    });
-                }
-            });
-        });
-
-        // Set first tab as active by default
-        if (this.elements.tabs.buttons[0]) {
-            this.elements.tabs.buttons[0].click();
-        }
-    }
-
-    initializeAnimations() {
-        // Hero section animations
-        const heroContent = document.querySelector('.hero-content');
-        if (heroContent) {
-            gsap.from(heroContent.children, {
-                y: 30,
-                opacity: 0,
-                duration: 1,
-                stagger: 0.2,
-                ease: 'power3.out'
-            });
-        }
-
-        // Animate elements on scroll
-        const animateOnScroll = (elements, animation) => {
-            elements.forEach(element => {
-                gsap.from(element, {
-                    scrollTrigger: {
-                        trigger: element,
-                        start: 'top bottom-=100',
-                        toggleActions: 'play none none reverse'
-                    },
-                    ...animation
-                });
-            });
-        };
-
-        // Card animations
-        const cards = document.querySelectorAll('.package-card, .course-card');
-        animateOnScroll(cards, {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out'
-        });
-
-        // Feature animations
-        const features = document.querySelectorAll('.feature');
-        animateOnScroll(features, {
-            x: -30,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1
-        });
-
-        // Stats counter animations
-        const stats = document.querySelectorAll('.stat-number');
-        stats.forEach(stat => {
-            const target = parseInt(stat.getAttribute('data-target'));
-            gsap.to(stat, {
-                scrollTrigger: {
-                    trigger: stat,
-                    start: 'top bottom-=100'
-                },
-                innerText: target,
-                duration: 2,
-                snap: { innerText: 1 },
-                ease: 'power1.inOut'
-            });
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(anchor.getAttribute('href'));
-                if (target) {
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: {
-                            y: target,
-                            offsetY: 70
-                        },
-                        ease: 'power3.inOut'
-                    });
-                }
-            });
-        });
-    }
-
-    initializeFormValidation() {
-        this.elements.forms.forEach(form => {
-            // Add input validation styling
-            const inputs = form.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('blur', () => {
-                    if (input.hasAttribute('required') && !input.value.trim()) {
-                        this.showInputError(input, 'This field is required');
-                    } else if (input.type === 'email' && !this.validateEmail(input.value)) {
-                        this.showInputError(input, 'Please enter a valid email');
-                    } else {
-                        this.clearInputError(input);
-                    }
-                });
-
-                // Clear error on input
-                input.addEventListener('input', () => {
-                    this.clearInputError(input);
-                });
-            });
-
-            // Form submission handling
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                let isValid = true;
-                let firstInvalidInput = null;
-
-                // Validate all required fields
-                inputs.forEach(input => {
-                    if (input.hasAttribute('required') && !input.value.trim()) {
-                        isValid = false;
-                        if (!firstInvalidInput) firstInvalidInput = input;
-                        this.showInputError(input, 'This field is required');
-                    } else if (input.type === 'email' && !this.validateEmail(input.value)) {
-                        isValid = false;
-                        if (!firstInvalidInput) firstInvalidInput = input;
-                        this.showInputError(input, 'Please enter a valid email');
-                    }
-                });
-
-                if (isValid) {
-                    // Show success notification
-                    this.showNotification('Form submitted successfully!', 'success');
-                    form.reset();
-                } else if (firstInvalidInput) {
-                    // Scroll to and focus the first invalid input
-                    firstInvalidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    firstInvalidInput.focus();
-                }
-            });
-        });
-    }
-
-    validateEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    showInputError(input, message) {
-        const errorDiv = this.getOrCreateErrorDiv(input);
-        input.classList.add('border-red-500');
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-
-        // Shake animation
-        gsap.to(input, {
-            x: [-5, 5, -5, 5, 0],
-            duration: 0.4
-        });
-    }
-
-    clearInputError(input) {
-        const errorDiv = this.getOrCreateErrorDiv(input);
-        input.classList.remove('border-red-500');
-        errorDiv.style.display = 'none';
-    }
-
-    getOrCreateErrorDiv(input) {
-        let errorDiv = input.nextElementSibling;
-        if (!errorDiv || !errorDiv.classList.contains('error-message')) {
-            errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message text-red-500 text-sm mt-1';
-            input.parentNode.insertBefore(errorDiv, input.nextSibling);
-        }
-        return errorDiv;
-    }
-
-    showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
-            type === 'success' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-        }`;
-        notification.innerHTML = `
-            <div class="flex items-center">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-2"></i>
-                <p>${message}</p>
-            </div>
-        `;
-        document.body.appendChild(notification);
-
-        // Animate notification
-        gsap.fromTo(notification,
-            { x: 100, opacity: 0 },
-            { x: 0, opacity: 1, duration: 0.5 }
-        );
-
-        // Remove notification after delay
-        setTimeout(() => {
-            gsap.to(notification, {
-                x: 100,
-                opacity: 0,
-                duration: 0.5,
-                onComplete: () => notification.remove()
-            });
-        }, 3000);
-    }
-}
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-    window.englishAcademy = new EnglishAcademyApp();
-});
-</script>
-
-
-
 </body>
 </html>
